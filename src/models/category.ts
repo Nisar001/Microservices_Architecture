@@ -4,8 +4,8 @@ export interface ICategory extends Document {
    _admin: mongoose.Schema.Types.ObjectId;
    categoryname: string;
    createdAt: Date;
-   updatedAt: Date;
-}
+   updatedAt: Date
+};
 
 const CategorySchema: Schema = new Schema({
    _admin: {

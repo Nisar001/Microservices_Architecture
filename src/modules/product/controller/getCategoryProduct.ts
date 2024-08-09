@@ -1,24 +1,26 @@
 import { Request, Response } from "express";
 import { Product } from "../../../models/product";
 
-export const getAllProducts = async (req: Request, res: Response) => {
+export const getProductsByCategory = async (req: Request, res: Response) => {
    try {
-      const { _id } = req.user; // user id 
+      const { _id } = req.user
       if (!_id) {
          return res.status(401).json({ message: 'Unauthorized Access' })
       }
-      //const {page=1, limit=10, name} = req.query;
+      const { _categoryId } = req.query; //categoryId
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
       const name = req.query.name as string;
 
       const query = name
-         ? { isDeleted: false, isBlocked: false, isAvailable: true, name: { $regex: name, $options: 'i' } }
-         : { isDeleted: false, isBlocked: false, isAvailable: true };
+         ? { _category: _categoryId, isDeleted: false, isBlocked: false, isAvailable: true, name: { $regex: name, $options: 'i' } }
+         : { _category: _categoryId, isDeleted: false, isBlocked: false, isAvailable: true };
 
-      const products = await Product.find(query).populate('_store').populate('_category')
+      const products = await Product.find(query).populate('_store').populate('_category').populate('discount')
          .skip((page - 1) * limit)
          .limit(limit);
+
+
 
       if (products.length === 0) {
          return res.json({ message: 'No Products, Please add some products' });
