@@ -3,9 +3,10 @@ import mongoose, { Document, model, Schema } from 'mongoose'
 export interface ICategory extends Document {
    _admin: mongoose.Schema.Types.ObjectId;
    categoryname: string;
+   isBlocked: boolean;
    createdAt: Date;
-   updatedAt: Date
-};
+   updatedAt: Date;
+}
 
 const CategorySchema: Schema = new Schema({
    _admin: {
@@ -17,6 +18,10 @@ const CategorySchema: Schema = new Schema({
       type: String,
       required: true,
       unique: true
+   },
+   isBlocked: {
+      type: Boolean,
+      default: false
    }
 }, {
    timestamps: true,

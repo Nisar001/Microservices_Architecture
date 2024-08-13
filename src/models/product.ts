@@ -6,15 +6,17 @@ export interface IProduct extends Document {
       role: 'seller' | 'admin'
    };
    _category: mongoose.Schema.Types.ObjectId;
-   _store: mongoose.Schema.Types.ObjectId;
+   _store?: mongoose.Schema.Types.ObjectId;
    name: string;
    price: number;
    mrp: number;
    image?: string;
    stock: number;
    discount?: mongoose.Schema.Types.ObjectId;
+   discountedPrice: number;
    description?: string;
    isDeleted: boolean;
+   isHotDeal: boolean;
    isBlocked: boolean;
    isAvailable: boolean;
 }
@@ -36,11 +38,14 @@ const ProductSchema: Schema = new Schema({
    _store: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'store',
-      required: true
    },
    name: {
       type: String,
       required: true
+   },
+   discountedPrice: {
+      type: Number,
+      default: null
    },
    price: {
       type: Number,
@@ -65,6 +70,10 @@ const ProductSchema: Schema = new Schema({
       type: String,
    },
    isBlocked: {
+      type: Boolean,
+      default: false
+   },
+   isHotDeal: {
       type: Boolean,
       default: false
    },

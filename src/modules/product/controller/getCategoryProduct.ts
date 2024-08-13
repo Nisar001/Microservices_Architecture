@@ -16,7 +16,7 @@ export const getProductsByCategory = async (req: Request, res: Response) => {
          ? { _category: _categoryId, isDeleted: false, isBlocked: false, isAvailable: true, name: { $regex: name, $options: 'i' } }
          : { _category: _categoryId, isDeleted: false, isBlocked: false, isAvailable: true };
 
-      const products = await Product.find(query).populate('_store').populate('_category').populate('discount')
+      const products = await Product.find(query).populate('_store').populate('discount')
          .skip((page - 1) * limit)
          .limit(limit);
 
